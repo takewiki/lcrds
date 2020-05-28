@@ -9,7 +9,11 @@ menu_column <- tabItem(tabName = "column",
                                       fluidRow(
                                         column(4,     box(
                                           title = "选择数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'operation here'
+                                          mdl_text('bq_DM_billNo','请输入DM单号'),
+                                          mdl_text('bq_DM_VerNo','请输入版本号'),
+                                          
+                                          actionBttn('bq_DM_preview','确认查询')
+                                          
                                           
                                         )),
                                         column(8,box(
@@ -22,7 +26,7 @@ menu_column <- tabItem(tabName = "column",
                                       fluidRow(
                                         column(4,     box(
                                           title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'operation here'
+                                          actionBttn('bq_getWgPrice','获取外购物料价格')
                                           
                                         )),
                                         column(8,box(
@@ -35,7 +39,12 @@ menu_column <- tabItem(tabName = "column",
                                       fluidRow(
                                         column(4,     box(
                                           title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'operation here'
+                                          mdl_file('bq_wg_file','选择需要上传的采购物料'),
+                                          actionBttn('bq_wg_filter','修改外购物料价格'),
+                                          actionBttn('bq_wg_apply','应用价格')
+                                          
+                                    
+                                          
                                           
                                         )),
                                         column(8,box(
