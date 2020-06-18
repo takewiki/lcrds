@@ -3,7 +3,7 @@ menu_series<- tabItem(tabName = "series",
                         column(12,   tabBox(
                           title = "配货单列表",width = 12,
                           # The id lets us use input$tabset1 on the server to find the current tab
-                          id = "tabset1", height = "600px",
+                          id = "tabset_sd", height = "600px",
                           tabPanel("SMEC外部标签", 
                                    tagList(
                                      fluidRow(

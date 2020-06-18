@@ -379,7 +379,81 @@
     
    
    
-   
+   #处理BOM管理----
+    #跳转到G翻转表
+    observeEvent(input$bq_toGtab,{
+      updateTabsetPanel(session, "tabset_bomQuery",
+                        selected = "G番表")
+    })
+    
+    #格式化G翻转表
+    file_bom <- var_file('bq_file')
+    observeEvent(input$bq_formatG,{
+      file <- file_bom()
+      
+      Gtab_batchWrite_db(conn = conn_bom,file=file,show_progress = TRUE,exclude_sheetName = lcrdspkg::lc_exclude_sheetNames())
+      pop_notice('G番表完成处理')
+    })
+    
+    #跳转到L番表
+    observeEvent(input$bq_goLtab,{
+      updateTabsetPanel(session, "tabset_bomQuery",
+                        selected = "L番表")
+      
+    })
+    
+    observeEvent(input$bq_formatL,{
+      file <- file_bom()
+      
+      Ltab_batchWrite_db(conn = conn_bom,file=file,show_progress = TRUE,exclude_sheetName = lcrdspkg::lc_exclude_sheetNames())
+      pop_notice('L番表完成处理')
+      
+    })
+    
+    #跳转到BOM运算
+    
+    observeEvent(input$bq_goCalcBom,{
+      updateTabsetPanel(session, "tabset_bomQuery",
+                        selected = "BOM运算")
+      
+      
+      
+    })
+    #实现BOM运算逻辑
+    observeEvent(input$bq_calcBom,{
+      
+      lcrdspkg::dm_dealAll(conn=conn_bom,show_process = TRUE)
+      pop_notice('BOM运算已完成')
+      
+      
+      
+    })
+    
+    #配置BOM速查---
+    
+    var_FchartNo <- var_text('bq_spare_partNo')
+    var_FGtab <- var_text('bq_spare_GNo')
+    var_FLtab <- var_text('bq_spare_LNo')
+    db_bom_spare <- eventReactive(input$bq_spare_preview,{
+      FchartNo <- var_FchartNo()
+      FGtab <- var_FGtab()
+      FLtab <- var_FLtab()
+      
+      res <- lcrdspkg::dm_dealOne(conn=conn_bom,FchartNo = FchartNo,FGtab = FGtab,FLtab = FLtab)
+      names(res) <-c('主图号','名称','分图号','件号','L番','规格','备注','序号','基本数量','长度/系数','总数量','G番号-参数','L番号-参数')
+      return(res)
+      
+    })
+    
+    observeEvent(input$bq_spare_preview,{
+      data <- db_bom_spare()
+      
+      run_dataTable2('bq_spare_dataShow',data = data)
+      pop_notice('配件查询已完成')
+      run_download_xlsx('bq_spare_download',data = data,filename = '配件BOM查询下载.xlsx')
+    })
+
+    
    
   
 })

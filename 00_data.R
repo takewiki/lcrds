@@ -9,10 +9,14 @@ app_id <- 'lcrds'
 
 conn_be <- conn_rds('rdbe')
 
-
+#lcrdspkg::Gtab_batchWrite_db(file="DM线束 BOM-V3-611-final.xlsx")
 
 #设置链接---
-#conn <- conn_rds('nsic')
+
+conn_bom <- conn_rds('lcrds')
+
+
+
 
 
 

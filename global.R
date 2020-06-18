@@ -17,6 +17,7 @@ library(shinyalert);
 library(rclipboard);
 library(DTedit);
 DTeditCn::setDTtoCn();
+library(lcrdspkg)
 
 
 source('00_data.R',encoding = 'utf-8');

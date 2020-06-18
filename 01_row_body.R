@@ -9,8 +9,9 @@ menu_row <- tabItem(tabName = "row",
                                    fluidRow(
                                      column(4,     box(
                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                       mdl_file('bq_file','请选择需要上传的BOM文件'),
-                                       actionBttn('bq_preview','预览BOM数据')
+                                       mdl_file('bq_file','请选择需要上传的BOM文件')
+                                       ,
+                                       actionBttn('bq_toGtab','跳转到G翻番表')
                                        #,
                                        #actionBttn('bq_upload','上传服务器')
                                        
@@ -25,9 +26,9 @@ menu_row <- tabItem(tabName = "row",
                                    fluidRow(
                                      column(4,     box(
                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                       actionBttn('bq_readGT','读取G番表'),
-                                       actionBttn('bq_formatG','格式化G番表'),
-                                       actionBttn('bq_G_upload','上传服务器')
+                                       
+                                       actionBttn('bq_formatG','格式化G番表并上传服务器'),
+                                       actionBttn('bq_goLtab','跳转到L番表')
                                        
                                      )),
                                      column(8,box(
@@ -40,9 +41,25 @@ menu_row <- tabItem(tabName = "row",
                                    fluidRow(
                                      column(4,     box(
                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                       actionBttn('bq_readLT','读取L番表'),
-                                       actionBttn('bq_formatL','格式化L番表'),
-                                       actionBttn('bq_L_upload','上传服务器')
+                                       #actionBttn('bq_readLT','读取L番表'),
+                                       actionBttn('bq_formatL','格式化L番表')
+                                       ,
+                                       actionBttn('bq_goCalcBom','跳转到BOM运算')
+                                       
+                                     )),
+                                     column(8,box(
+                                       title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'data here'
+                                     )))
+                                 )),
+                        tabPanel("BOM运算", 
+                                 tagList(
+                                   fluidRow(
+                                     column(4,     box(
+                                       title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
+                                       tags$h4("BOM运算是指将上传的BOM中的G番号及L番号代入，完成A1L等变量的替代[件号L番，G番等3种情况]，如果数量量太大，一般耗时会很长，目前设置是服务器每天晚上自动定时运算，一般不需要执行。
+                                               如果希望上传的数据立刻生效，请执行此功能"),
+                                       actionBttn('bq_calcBom','运算BOM,模拟G番L番代入')
                                        
                                      )),
                                      column(8,box(
@@ -64,7 +81,7 @@ menu_row <- tabItem(tabName = "row",
                                      )),
                                      column(8,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       'data here'
+                                       mdl_dataTable('bq_spare_dataShow',label =  '数据显示')
                                      )))
                                  )),
                         tabPanel("DM清单", 
@@ -77,6 +94,61 @@ menu_row <- tabItem(tabName = "row",
                                        
                                        actionBttn('bq_DM_preview','预览DM-BOM'),
                                        mdl_download_button('bq_DM_download','下载到Excel')
+                                       
+                                     )),
+                                     column(8,box(
+                                       title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'data here'
+                                     )))
+                                 )),
+                        
+                        tabPanel("BOM拆分", 
+                                 tagList(
+                                   fluidRow(
+                                     column(4,     box(
+                                       title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'operation here'
+                                       
+                                     )),
+                                     column(8,box(
+                                       title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'data here'
+                                     )))
+                                 )),
+                        tabPanel("BOM打包", 
+                                 tagList(
+                                   fluidRow(
+                                     column(4,     box(
+                                       title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'operation here'
+                                       
+                                     )),
+                                     column(8,box(
+                                       title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'data here'
+                                     )))
+                                 )),
+                        tabPanel("BOM导出到ERP", 
+                                 tagList(
+                                   fluidRow(
+                                     column(4,     box(
+                                       title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'operation here'
+                                       
+                                     )),
+                                     column(8,box(
+                                       title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'data here'
+                                     )))
+                                 )),
+                    
+                        
+                        tabPanel("BOM同步日志", 
+                                 tagList(
+                                   fluidRow(
+                                     column(4,     box(
+                                       title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
+                                       'operation here'
                                        
                                      )),
                                      column(8,box(

@@ -17,72 +17,9 @@ menu_book <- tabItem(tabName = "book",
                                         'data here'
                                       )))
                                   )),
-                         tabPanel("新BOM查询", 
-                                  tagList(
-                                    fluidRow(
-                                      column(4,     box(
-                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'operation here'
-                                        
-                                      )),
-                                      column(8,box(
-                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'data here'
-                                      )))
-                                  )),
-                         tabPanel("BOM拆分", 
-                                  tagList(
-                                    fluidRow(
-                                      column(4,     box(
-                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'operation here'
-                                        
-                                      )),
-                                      column(8,box(
-                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'data here'
-                                      )))
-                                  )),
-                         tabPanel("BOM打包", 
-                                  tagList(
-                                    fluidRow(
-                                      column(4,     box(
-                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'operation here'
-                                        
-                                      )),
-                                      column(8,box(
-                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'data here'
-                                      )))
-                                  )),
+                        
+                       
                          tabPanel("物料导出到ERP", 
-                                  tagList(
-                                    fluidRow(
-                                      column(4,     box(
-                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'operation here'
-                                        
-                                      )),
-                                      column(8,box(
-                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'data here'
-                                      )))
-                                  )),
-                         tabPanel("BOM导出到ERP", 
-                                  tagList(
-                                    fluidRow(
-                                      column(4,     box(
-                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'operation here'
-                                        
-                                      )),
-                                      column(8,box(
-                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                        'data here'
-                                      )))
-                                  )),
-                         tabPanel("BOM同步日志", 
                                   tagList(
                                     fluidRow(
                                       column(4,     box(
