@@ -380,6 +380,19 @@
    
    
    #处理BOM管理----
+    
+    
+    #预览页签
+    observeEvent(input$bq_sheet_preview,{
+      
+      file <- file_bom()
+      data <- lcrdspkg::lc_bom_sheetName(file)
+      data2 <- data.frame(`页签名称` = data,stringsAsFactors = F)
+      run_dataTable2('bq_sheet_dataPreview',data2)
+      
+      
+    })
+    
     #跳转到G翻转表
     observeEvent(input$bq_toGtab,{
       updateTabsetPanel(session, "tabset_bomQuery",
@@ -388,12 +401,52 @@
     
     #格式化G翻转表
     file_bom <- var_file('bq_file')
+    #选定的页答
+    var_include_sheet <- var_text('bq_sheet_select')
+    
     observeEvent(input$bq_formatG,{
       file <- file_bom()
       
-      Gtab_batchWrite_db(conn = conn_bom,file=file,show_progress = TRUE,exclude_sheetName = lcrdspkg::lc_exclude_sheetNames())
+      include_sheetNames <- var_include_sheet()
+      print(include_sheetNames)
+      if(is.null(include_sheetNames)){
+        include_sheetNames <-NA
+      }
+      print(include_sheetNames)
+      if(tsdo::len(include_sheetNames) == 0){
+        include_sheetNames <-NA
+      }
+      
+      print(include_sheetNames)
+      lcrdspkg::Gtab_batchWrite_db(conn=conn_bom,file = file,include_sheetNames = include_sheetNames,show_progress = TRUE)
+      
       pop_notice('G番表完成处理')
     })
+    
+    
+    #处理下载数据--
+    var_gtab_chartNo <- var_text('bq_Gtab_chartNo_input')
+    
+    data_gtab_dl <- eventReactive(input$bq_Gtab_chartNo_preview,{
+      
+      FchartNo <-var_gtab_chartNo()
+      res <-lcrdspkg::Gtab_selectDB_byChartNo2(conn = conn_bom,FchartNo =FchartNo )
+      return(res)
+    })
+    
+    observeEvent(input$bq_Gtab_chartNo_preview,{
+      
+      data <- data_gtab_dl()
+      FchartNo <-var_gtab_chartNo()
+      filename <- paste0(FchartNo,"_G番表.xlsx")
+      run_dataTable2('bq_Gtab_chartNo_dataShow',data = data)
+      run_download_xlsx('bq_Gtab_chartNo_dl',data = data,filename = filename)
+      
+    })
+    
+    
+    
+    
     
     #跳转到L番表
     observeEvent(input$bq_goLtab,{
@@ -405,10 +458,40 @@
     observeEvent(input$bq_formatL,{
       file <- file_bom()
       
-      Ltab_batchWrite_db(conn = conn_bom,file=file,show_progress = TRUE,exclude_sheetName = lcrdspkg::lc_exclude_sheetNames())
+      include_sheetNames <- var_include_sheet()
+      print(include_sheetNames)
+      if(is.null(include_sheetNames)){
+        include_sheetNames <-NA
+      }
+      if(tsdo::len(include_sheetNames) == 0){
+        include_sheetNames <-NA
+      }
+      print(include_sheetNames)
+      lcrdspkg::Ltab_batchWrite_db(conn = conn_bom,file = file,include_sheetNames = include_sheetNames,show_progress = TRUE)
       pop_notice('L番表完成处理')
       
     })
+    
+    #处理L翻转表数据
+    var_ltab_chartNo <- var_text('bq_Ltab_chartNo_input')
+    
+    data_ltab_dl <- eventReactive(input$bq_Ltab_chartNo_preview,{
+      
+      FchartNo <-var_ltab_chartNo()
+      res <-lcrdspkg::Ltab_select_db2(conn=conn_bom,FchartNo = FchartNo)
+      return(res)
+    })
+    
+    observeEvent(input$bq_Ltab_chartNo_preview,{
+      
+      data <- data_ltab_dl()
+      FchartNo <-var_ltab_chartNo()
+      filename <- paste0(FchartNo,"_L番表.xlsx")
+      run_dataTable2('bq_Ltab_chartNo_dataShow',data = data)
+      run_download_xlsx('bq_Ltab_chartNo_dl',data = data,filename = filename)
+      
+    })
+    
     
     #跳转到BOM运算
     
@@ -422,7 +505,7 @@
     #实现BOM运算逻辑
     observeEvent(input$bq_calcBom,{
       
-      lcrdspkg::dm_dealAll(conn=conn_bom,show_process = TRUE)
+      lcrdspkg::dm_dealAll2(conn=conn_bom,show_process = TRUE)
       pop_notice('BOM运算已完成')
       
       
@@ -439,8 +522,7 @@
       FGtab <- var_FGtab()
       FLtab <- var_FLtab()
       
-      res <- lcrdspkg::dm_dealOne(conn=conn_bom,FchartNo = FchartNo,FGtab = FGtab,FLtab = FLtab)
-      names(res) <-c('主图号','名称','分图号','件号','L番','规格','备注','序号','基本数量','长度/系数','总数量','G番号-参数','L番号-参数')
+      res<- lcrdspkg::dm_selectDB_detail(conn=conn_bom,FchartNo = FchartNo,FParamG = FGtab,FParamL = FLtab)
       return(res)
       
     })
@@ -452,6 +534,30 @@
       pop_notice('配件查询已完成')
       run_download_xlsx('bq_spare_download',data = data,filename = '配件BOM查询下载.xlsx')
     })
+    
+    #处理DM数据--
+    var_file_dm <- var_file('bq_dm_file')
+    
+    data_dm_detail <- eventReactive(input$bq_DM_preview,{
+      file <- var_file_dm()
+      print(file)
+      sheetName <- input$bq_dm_sheetName
+      print(sheetName)
+      res <- lcrdspkg::dm_queryAll(file = file,sheet = sheetName,conn = conn_bom)
+      print(res)
+      return(res)
+    })
+    
+    observeEvent(input$bq_DM_preview,{
+      print('A')
+      data <- data_dm_detail()
+      print(data)
+      run_dataTable2('bq_DM_dataShow',data = data)
+      run_download_xlsx('bq_DM_download',data = data,filename = 'DM清单明细.xlsx')
+      
+      
+    })
+
 
     
    
