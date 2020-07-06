@@ -537,14 +537,16 @@
     
     #处理DM数据--
     var_file_dm <- var_file('bq_dm_file')
+    #处理相关数据
     
     data_dm_detail <- eventReactive(input$bq_DM_preview,{
       file <- var_file_dm()
       print(file)
       sheetName <- input$bq_dm_sheetName
       print(sheetName)
-      res <- lcrdspkg::dm_queryAll(file = file,sheet = sheetName,conn = conn_bom)
-      print(res)
+      #res <- lcrdspkg::dm_queryAll(file = file,sheet = sheetName,conn = conn_bom)
+      res <- lcrdspkg::dmList_Expand_Multi(file=file,sheet = sheetName,conn=conn_bom)
+      #print(res)
       return(res)
     })
     
