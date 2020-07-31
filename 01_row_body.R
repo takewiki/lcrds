@@ -92,6 +92,11 @@ menu_row <- tabItem(tabName = "row",
                                        mdl_text('bq_spare_partNo','请输入配件号'),
                                        mdl_text('bq_spare_GNo','请输入G番号'),
                                        mdl_text('bq_spare_LNo','请输入L番号'),
+                                       tags$h4("多个L番使用英文逗号,间隔;"),
+                                       tags$h4("示例:L07,L08,L13,L27,LS01,LS17;"),
+                                       tags$h4("不输入表示全部L番"),
+                                    
+                                       br(),
                                        actionBttn('bq_spare_preview','预览配件BOM'),
                                        mdl_download_button('bq_spare_download','下载到Excel')
                                        

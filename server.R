@@ -522,7 +522,7 @@
       FGtab <- var_FGtab()
       FLtab <- var_FLtab()
       
-      res<- lcrdspkg::dm_selectDB_detail(conn=conn_bom,FchartNo = FchartNo,FParamG = FGtab,FParamL = FLtab)
+      res<- lcrdspkg::dm_selectDB_detail2(conn=conn_bom,FchartNo = FchartNo,FParamG = FGtab,FParamL = FLtab)
       return(res)
       
     })
