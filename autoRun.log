@@ -24322,3 +24322,7 @@ Registered S3 method overwritten by 'pryr':
   method      from
   print.bytes Rcpp
 [1] "load finished!"
+Registered S3 method overwritten by 'pryr':
+  method      from
+  print.bytes Rcpp
+[1] "load finished!"
