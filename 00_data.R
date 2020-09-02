@@ -1,5 +1,7 @@
 # 设置app标题-----
 #change log---
+#2.6
+# add the scroll bar in the dataTable
 #2.5
 #完善没有L番的情况
 #2.4

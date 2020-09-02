@@ -22,7 +22,7 @@ menu_row <- tabItem(tabName = "row",
                                      )),
                                      column(8,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       mdl_dataTable('bq_sheet_dataPreview','BOM页签数据')
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('bq_sheet_dataPreview','BOM页签数据'))
                                      )))
                                  )),
                         tabPanel("G番表", 
@@ -44,7 +44,7 @@ menu_row <- tabItem(tabName = "row",
                                      )),
                                      column(8,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       mdl_dataTable('bq_Gtab_chartNo_dataShow','G表数据')
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('bq_Gtab_chartNo_dataShow','G表数据'))
                                      )))
                                  )),
                         tabPanel("L番表", 
@@ -66,7 +66,7 @@ menu_row <- tabItem(tabName = "row",
                                      )),
                                      column(8,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       mdl_dataTable('bq_Ltab_chartNo_dataShow','L表数据')
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('bq_Ltab_chartNo_dataShow','L表数据'))
                                      )))
                                  )),
                         tabPanel("BOM运算", 
@@ -103,13 +103,13 @@ menu_row <- tabItem(tabName = "row",
                                      )),
                                      column(8,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       mdl_dataTable('bq_spare_dataShow',label =  '数据显示')
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('bq_spare_dataShow',label =  '数据显示'))
                                      )))
                                  )),
                         tabPanel("DM清单", 
                                  tagList(
                                    fluidRow(
-                                     column(4,     box(
+                                     column(3,     box(
                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
                                        mdl_file('bq_dm_file','请选择DM清单文件'),
                                        textInput(inputId = 'bq_dm_sheetName',label = '请选择DM清单所在页签',value = 'DM清单'),
@@ -118,9 +118,9 @@ menu_row <- tabItem(tabName = "row",
                                        mdl_download_button('bq_DM_download','下载DM明细清单')
                                        
                                      )),
-                                     column(8,box(
+                                     column(9,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       mdl_dataTable('bq_DM_dataShow','显示DM明细数据')
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('bq_DM_dataShow','显示DM明细数据'))
                                      )))
                                  )),
                         
