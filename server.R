@@ -561,7 +561,50 @@
     })
 
 
+    #DM单单个查询-------
+    #var_dm1_dmno <- var_text('dm1_dmno')
+    observeEvent(input$dm1_preview,{
+      FDmNo = input$dm1_dmno
+      print(FDmNo)
+      data <-try(lcrdspkg::dmQuery1_readDB_cn(conn=conn_bom,FDmNo = FDmNo))
+      run_dataTable2('dm1_dataShow',data = data)
+      file_name <- paste0(FDmNo,"_DM清单明细查询.xlsx")
+      run_download_xlsx(id = 'dm1_dl',data = data,filename = file_name)
+    })
     
+    
+    #下载DM配件混合查询模板-----
+     run_download_xlsx(id = 'dmbombo_tpl_dl',data = get_dmcombo_tpl(),filename = 'DM配件混合查询模板.xlsx')
+    
+    # DM配件混合查询
+    var_dmcombo_file_input <- var_file("dmcombo_file_input")
+    
+    observeEvent(input$dmcombo_data_preview,{
+      file <-var_dmcombo_file_input()
+      sheetName <- input$dmcombo_sheetName
+      data <- lcrdspkg::dmQuery_Batch_file(file = file,sheet = sheetName,conn = conn_bom)
+      run_dataTable2('dmcombo_data_dataShow',data = data)
+      file_name <- paste0("DM配件混合查询_",as.character(Sys.Date()),".xlsx")
+      run_download_xlsx('dmcombo_data_dl',data = data,filename = file_name)
+      
+    })
+    
+
+    #针对物料匹配表进行处理---
    
+    run_download_xlsx(id = 'map_tpl_dl',data = get_chartMtrlMap_tpl(),filename = '图号物料匹配表模板.xlsx')
+    
+    # DM配件混合查询
+    var_map_file_input <- var_file("map_file_input")
+    
+    observeEvent(input$map_data_preview,{
+      file <-var_map_file_input()
+      sheetName <- input$map_sheetName
+      data <- lcrdspkg::read_chartMtrlMapping(conn = conn_bom,file = file,sheet=sheetName)
+      run_dataTable2('map_data_dataShow',data = data)
+      pop_notice('已上传服务器！')
+      
+    })
+    
   
 })

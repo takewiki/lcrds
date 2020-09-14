@@ -106,7 +106,7 @@ menu_row <- tabItem(tabName = "row",
                                        div(style = 'overflow-x: scroll', mdl_dataTable('bq_spare_dataShow',label =  '数据显示'))
                                      )))
                                  )),
-                        tabPanel("DM清单", 
+                        tabPanel("DM批量更新", 
                                  tagList(
                                    fluidRow(
                                      column(3,     box(
@@ -114,8 +114,10 @@ menu_row <- tabItem(tabName = "row",
                                        mdl_file('bq_dm_file','请选择DM清单文件'),
                                        textInput(inputId = 'bq_dm_sheetName',label = '请选择DM清单所在页签',value = 'DM清单'),
                                        
-                                       actionBttn('bq_DM_preview','预览DM明细清单'),
-                                       mdl_download_button('bq_DM_download','下载DM明细清单')
+                                       actionBttn('bq_DM_preview','预览DM更新明细'),
+                                       br(),
+                                       br(),
+                                       mdl_download_button('bq_DM_download','下载DM更新明细')
                                        
                                      )),
                                      column(9,box(
@@ -123,6 +125,26 @@ menu_row <- tabItem(tabName = "row",
                                        div(style = 'overflow-x: scroll', mdl_dataTable('bq_DM_dataShow','显示DM明细数据'))
                                      )))
                                  )),
+                        tabPanel("DM单个查询", 
+                                 tagList(
+                                   fluidRow(
+                                     column(3,     box(
+                                       title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
+                                      
+                                       textInput(inputId = 'dm1_dmno',label = '请输入需要查询的DM单号',value = 'DMP235000B1561920'),
+                                       
+                                       actionBttn('dm1_preview','查询指定DM单明细'),
+                                       br(),
+                                       br(),
+                                       mdl_download_button('dm1_dl','下载DM单明细')
+                                       
+                                     )),
+                                     column(9,box(
+                                       title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('dm1_dataShow','显示DM明细数据'))
+                                     )))
+                                 )),
+                        
                         
                         tabPanel("BOM拆分", 
                                  tagList(

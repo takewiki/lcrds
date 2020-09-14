@@ -1,5 +1,9 @@
 # 设置app标题-----
 #change log---
+#2.7
+#添加DM清单上传数据库功能
+#添加物料与图号对比表
+#添加图号与DM批量查询
 #2.6
 # add the scroll bar in the dataTable
 #2.5
@@ -221,6 +225,29 @@ books.delete.callback <- function(data, row ,table ='takewiki_barcode_allocate_a
 }
 
 
+
+#模板数据
+
+get_dmcombo_tpl <- function(){
+
+ res <- readxl::read_excel("www/DM配件混合查询.xlsx", 
+                            sheet = "DM配件混合查询")
+ res <- list(res)
+ names(res) <-"DM配件混合查询"
+ return(res)
+  #View(dmcombo_tpl)
+}
+
+#图号与物料对照表
+
+get_chartMtrlMap_tpl <- function() {
+  res  <- readxl::read_excel("www/图号物料匹配表.xlsx", 
+                                 sheet = "图号物料匹配表")
+  res <- list(res)
+  names(res) <-"图号物料匹配表"
+  return(res)
+  
+}
 
 
 
