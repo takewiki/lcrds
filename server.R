@@ -606,5 +606,47 @@
       
     })
     
+    #下载模板
+    run_download_xlsx('bom_split_tml_dl',data=get_bom_split_tpl(),filename = 'BOM拆分模板.xlsx')
+    
+    #上传服务器
+    var_bom_split_file <- var_file('bom_split_file')
+    observeEvent(input$bom_split_upload,{
+      file <- var_bom_split_file()
+      data <- readxl::read_excel(path = file,sheet = 'BOM拆分')
+      FChartNo <- data$`图号`  
+      res <- try(lcrdspkg::bom_split(mtrl_multiple_G = FChartNo))
+      ncount <- nrow(res)
+      if(ncount >0){
+        info <- res
+        #上传数据
+        lcrdspkg::bom_split_upload(conn = conn_bom,data = info)
+        names(info) <-c('序号','主图号','分录号','子图号')
+        #上传数据
+        rownames(info) <- NULL
+      }else{
+        info <- data.frame(`反馈结果`='没有查到任何数据',stringsAsFactors = F)
+      }
+      run_dataTable2('bom_split_dataShow',data = info)
+      #提示信息
+      pop_notice('数据已上传服务器!')
+      file_res_name <- paste0("BOM拆分结果_",as.character(Sys.Date()),".xlsx")
+      run_download_xlsx(id = 'bom_split_res_dl',data = info,filename = file_res_name)
+
+      
+      
+    })
+    
+    #查询数据
+    observeEvent(input$bom_split_query_btn,{
+      
+      data <- lcrdspkg::bom_split_query(conn=conn_bom,FBillNo = input$bom_split_query_txt)
+      
+      run_dataTable2('bom_split_query_dataShow',data = data)
+      #下载
+      file_res_name <- paste0("BOM拆分查询结果_",as.character(Sys.Date()),".xlsx")
+      run_download_xlsx(id = 'bom_split_query_dl',data = data,filename = file_res_name)
+    })
+    
   
 })

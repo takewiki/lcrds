@@ -1,5 +1,7 @@
 # 设置app标题-----
 #change log---
+#3.0
+# 添加对多G番销售订单物料的拆分处理
 #2.7
 #添加DM清单上传数据库功能
 #添加物料与图号对比表
@@ -249,5 +251,14 @@ get_chartMtrlMap_tpl <- function() {
   
 }
 
+
+# 生产订单拆分模板
+get_bom_split_tpl <- function(){
+  data <- data.frame(`序号` = 1:2,`图号`=c('P203031A112G08G02G01G21G34G10G06G44G31','P203031A112G08G02G01G21G34G10G06G44G32'),stringsAsFactors = F)
+  res <- list(data)
+  names(res) <-'BOM拆分'
+  return(res)
+  
+}
 
 

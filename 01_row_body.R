@@ -146,30 +146,41 @@ menu_row <- tabItem(tabName = "row",
                                  )),
                         
                         
-                        tabPanel("BOM拆分", 
+                        tabPanel("BOM拆分上传", 
                                  tagList(
                                    fluidRow(
                                      column(4,     box(
                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                       'operation here'
+                                       mdl_file(id = 'bom_split_file',
+                                                label ='请上传销售订单上组合G番的物料列表.xlsx' ),
+                                       tags$h4("第一次使用,请下载上传模板"),
+                                       mdl_download_button(id = 'bom_split_tml_dl',label = '下载模板'),
+                                       br(),
+                                       actionBttn(inputId = 'bom_split_upload',label = '上传服务器'),
+                                       mdl_download_button(id = 'bom_split_res_dl',label = '下载BOM拆分结果')
+                                       
                                        
                                      )),
                                      column(8,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       'data here'
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('bom_split_dataShow','显示明细数据'))
                                      )))
                                  )),
-                        tabPanel("BOM打包", 
+                        tabPanel("BOM拆分查询", 
                                  tagList(
                                    fluidRow(
                                      column(4,     box(
                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                       'operation here'
+                                       textInput(inputId = 'bom_split_query_txt',label = '请输入查询主图号多G番',value = ''),
+                                       tags$h4('主图号为空表示全部'),
+                                       actionButton(inputId = 'bom_split_query_btn',label = '查询'),
+
+                                       mdl_download_button(id ='bom_split_query_dl' ,label = '下载')
                                        
                                      )),
                                      column(8,box(
                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                       'data here'
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('bom_split_query_dataShow','显示明细数据'))
                                      )))
                                  )),
                         tabPanel("BOM导出到ERP", 
