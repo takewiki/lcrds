@@ -199,7 +199,7 @@
       file_ext_barcode <- file_ext_barcode();
       ext_so <- var_ext_so()
       res <- readxl::read_excel(file_ext_barcode);
-      res <- res[,c('订单号',	'物料号'	,'二维码','印版线束')];
+      res <- res[,c('订单号',	'物料号'	,'二维码','备注')];
       
       if(len(ext_so) >0){
         res <- res[res$`订单号` == ext_so & !is.na(res$`订单号`),]
@@ -288,23 +288,25 @@
     #处理智能匹配的内容
     
     data_barcode_match_db <- reactive({
-      res <-barcode_match_preview(conn,var_ext_so())
+      res <-barcode_match_preview2(conn,var_ext_so())
       return(res)
     })
     data_barcode_match_preview <- reactive({
       res <- data_barcode_match_db();
-      names(res) <-c('销售订单号','图号','外部二维码','内部二维码')
+      #names(res) <-c('销售订单号','图号','外部二维码','内部二维码')
       return(res)
     })
     
     observeEvent(input$match_do,{
       #code here
       barcode_allocate_auto(conn,var_ext_so())
+      pop_notice('智能匹配已完成！')
       
     })
     
     observeEvent(input$match_preview,{
       run_dataTable2('preview_match_barcode', data_barcode_match_preview())
+      run_download_xlsx('match_dl',data = data_barcode_match_preview(),filename = '配货单.xlsx')
       
     })
     
@@ -647,6 +649,9 @@
       file_res_name <- paste0("BOM拆分查询结果_",as.character(Sys.Date()),".xlsx")
       run_download_xlsx(id = 'bom_split_query_dl',data = data,filename = file_res_name)
     })
+    
+    #添加条码功能模板
+    run_download_xlsx(id = 'ext_barCode_tpl_dl',data = get_extBarCode_tpl(),filename = '外部订单模板.xlsx')
     
   
 })

@@ -1,5 +1,7 @@
 # 设置app标题-----
 #change log---
+#3.1
+
 #3.0
 # 添加对多G番销售订单物料的拆分处理
 #2.7
@@ -43,7 +45,10 @@ conn_bom <- conn_rds('lcrds')
 
 
 
-conn <- conn_rds('lcdb')
+#conn <- conn_rds('lcdb')
+cfg_lc <- tsda::conn_config(config_file = "/cfg/conn_lc.R")
+
+conn <- tsda::conn_open(conn_config_info = cfg_lc)
 #sql <- 'select top 10 * from takewiki_mo_barcode '
 #mydata <- sql_select(conn,sql)
 #View(mydata)
@@ -147,6 +152,27 @@ barcode_allocate_auto <-function(conn,fbillno='bbc'){
 }
 
 #显示预览数据
+
+barcode_match_preview2 <- function(conn,fbillno='bbc'){
+  sql <- paste0("select  
+FBarcode_ext as 外部客户标签,
+FBarcode_inner as 内部标签,
+FNumber as 物料代码,
+FName as 品名,
+FModel as 规格,
+b.FBatchNo as 批次,
+b.FQty   as 数量 ,
+'' as 是否换标 from  takewiki_barcode_allocate_auto a
+inner join takewiki_mo_barcode b
+on a.FBarcode_inner = b.FBarcode
+where a.FSoNo = '",fbillno,"'")
+  r <- tsda::sql_select(conn,sql)
+  return(r)
+}
+
+
+
+
 barcode_match_preview <- function(conn,fbillno='bbc'){
   sql <- paste0("select * from takewiki_barcode_allocate_auto
 where FSoNo = '",fbillno,"'")
