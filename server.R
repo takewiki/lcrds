@@ -259,9 +259,17 @@
         pop_notice('请在外部标签填写销售订单号')
         return(data)
       }else{
-        res <- tsdo::df_addCol(data,'FSoNo',var_ext_so())
-        res$FSoNo <- tsdo::na_replace(res$FSoNo,'')
-        return(res)
+        ncount <- nrow(data)
+        if(ncount >0){
+          res <- tsdo::df_addCol(data,'FSoNo',var_ext_so())
+          res$FSoNo <- tsdo::na_replace(res$FSoNo,'')
+          return(res)
+        }else{
+          pop_notice(paste0("图号",var_barcode(),"没有对应的生产任务单及条码信息，请确认"))
+          return(data)
+          
+        }
+       
       }
       
     })

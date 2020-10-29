@@ -1,5 +1,7 @@
 # 设置app标题-----
 #change log---
+#3.2
+# fix the bug
 #3.1
 
 #3.0
@@ -46,7 +48,7 @@ conn_bom <- conn_rds('lcrds')
 
 
 #conn <- conn_rds('lcdb')
-cfg_lc <- tsda::conn_config(config_file = "/cfg/conn_lc.R")
+cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
 
 conn <- tsda::conn_open(conn_config_info = cfg_lc)
 #sql <- 'select top 10 * from takewiki_mo_barcode '
