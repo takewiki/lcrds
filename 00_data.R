@@ -1,5 +1,7 @@
 # 设置app标题-----
 #change log---
+#3.3
+#fix the bug
 #3.2
 # fix the bug
 #3.1

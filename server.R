@@ -224,6 +224,7 @@
       names(res) <-c('FSoNo','FChartNo','FBarcode','FNote')
       res$FNote <- tsdo::na_replace(res$FNote,'')
       res$FNote <- as.character(res$FNote)
+      res$FSoNo <- as.character(res$FSoNo)
       # res <- head(res)
       return(res)
       
