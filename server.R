@@ -225,7 +225,16 @@
       res$FNote <- tsdo::na_replace(res$FNote,'')
       res$FNote <- as.character(res$FNote)
       res$FSoNo <- as.character(res$FSoNo)
+      #增值对订单号~有处理
+      res$FChartNo <- lcrdspkg::soSplit(res$FChartNo)
       # res <- head(res)
+      return(res)
+      
+    })
+    
+    data_ext_barcode_cn <- reactive({
+      res <- data_ext_barcode_db()
+      names(res) <-c('订单号','物料号(图号)','二维码','备注')
       return(res)
       
     })
@@ -233,7 +242,7 @@
     
     
     observeEvent(input$btn_ext_barcode,{
-      run_dataTable2('preview_ext_barcode',data_ext_barcode_db())
+      run_dataTable2('preview_ext_barcode',data_ext_barcode_cn())
     })
     
     var_barcode <- var_text('mo_chartNo')
@@ -661,6 +670,23 @@
     
     #添加条码功能模板
     run_download_xlsx(id = 'ext_barCode_tpl_dl',data = get_extBarCode_tpl(),filename = '外部订单模板.xlsx')
+    #订单备注信息处理
+    run_download_xlsx(id = 'ext_soNote_tpl_dl',data = lcrdspkg::soNote_data_tpl(),filename = '订单备注模板.xlsx')
+    var_file_so_note <- var_file('file_so_note')
+    observeEvent(input$btn_soNote_preview,{
+      file = var_file_so_note()
+      data_preview <- lcrdspkg::soNote_read(file = file)
+      run_dataTable2(id = 'preview_soNote_dataView',data = data_preview)
+      
+      
+    })
     
+    observeEvent(input$btn_soNote_upload,{
+      file = var_file_so_note()
+      lcrdspkg::soNote_uploadDB(file = file,conn = conn_bom)
+      pop_notice('订单备注已上传服务器')
+      
+      
+    })
   
 })

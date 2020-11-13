@@ -25,6 +25,25 @@ menu_series<- tabItem(tabName = "series",
                                          div(style = 'overflow-x: scroll',mdl_dataTable('preview_ext_barcode',label = '预览外部标签内容'))
                                        )))
                                    )),
+                          tabPanel("上传订单备注", 
+                                   tagList(
+                                     fluidRow(
+                                       column(4,     box(
+                                         title = "订单备注", width = NULL, solidHeader = TRUE, status = "primary",
+                                         mdl_file('file_so_note','选择订单备注文件'),
+                                         tags$h4('第一次使用,请下载订单备注模板.xlsx'),
+                                         mdl_download_button('ext_soNote_tpl_dl',label = '下载模板'),
+                                        
+                                         actionButton('btn_soNote_preview','预览列表'),
+                                         use_pop(),
+                                         actionButton('btn_soNote_upload','上传服务器')
+                                         
+                                       )),
+                                       column(8,box(
+                                         title = "预览订单备注内容", width = NULL, solidHeader = TRUE, status = "primary",
+                                         div(style = 'overflow-x: scroll',mdl_dataTable('preview_soNote_dataView',label = '预览订单备注内容'))
+                                       )))
+                                   )),
                           tabPanel("LC内部标签", 
                                    tagList(fluidRow(
                                      column(4, box(

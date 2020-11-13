@@ -1,4 +1,6 @@
 # 设置app标题-----
+#3.4
+#增加销售订单图号拆份及订单备注
 #change log---
 #3.3
 #fix the bug
@@ -49,7 +51,7 @@ conn_bom <- conn_rds('lcrds')
 
 
 
-#conn <- conn_rds('lcdb')
+# conn <- conn_rds('lcdb')
 cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
 
 conn <- tsda::conn_open(conn_config_info = cfg_lc)
@@ -291,4 +293,14 @@ get_bom_split_tpl <- function(){
   
 }
 
+
+
+get_extBarCode_tpl <- function(){
+  #library(readxl)
+  so_smec_tpl <- readxl::read_excel("www/so_smec_tpl.xlsx", 
+                            sheet = "外部条码")
+  res <-list(so_smec_tpl)
+  names(res) <-'外部条码'
+  return(res)
+}
 
