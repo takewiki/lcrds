@@ -1,3 +1,4 @@
+# 报表分析--------
 menu_majority <- tabItem(tabName = "majority",
                          fluidRow(
                            column(12,   tabBox(

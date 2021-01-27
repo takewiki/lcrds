@@ -1,4 +1,15 @@
 # 设置app标题-----
+#3.5 2020-12-20
+#新增如下需求
+#1、外部的订单号第一行都不一样，增加批量上传
+#2、内部的生产任务单目前手工指定，后续调整为按图号+订单备注按先进先出的原则自动匹配
+#3、订单备注不一致的情况支持下载日志，然后上传到数据处理平台，批量更新ERP系统中的单据
+#4、内部条码增加隔离功能，支持添加与删除操作
+#5、针对生产任务单启用子单功能
+#    5.1如原来任务单据为MO080,数量量100，则生成子单MO080-001,MO080-002,...,MO080-100,数量全部为1
+#    5.2同时针对每个子单备注订单备注信息，考虑到人为操作的工作量及易错性
+#    5.3后续建议使用RPA机器人实现自动实现上述操作，以上功能预计本周完成开发，下周一交付使用
+
 #3.4
 #增加销售订单图号拆份及订单备注
 #change log---
@@ -50,8 +61,12 @@ conn_bom <- conn_rds('lcrds')
 
 
 
-
-# conn <- conn_rds('lcdb')
+#测试环境-------
+#测试环境1
+#conn <- conn_rds('lcdb')
+#测试环境2
+# conn <- conn_rds('LCERP')
+# 正式环境------
 cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
 
 conn <- tsda::conn_open(conn_config_info = cfg_lc)
@@ -74,26 +89,17 @@ order by  FBarcode  ",str_a)
   
 }
 
-
-query_barcode_chartNo <- function(fchartNo ='P207012C134G01',fbillno ='',order_asc = TRUE){
-  if (order_asc){
-    str_a <-'asc'
-  }else{
-    str_a <-'desc'
-  }
-  if(len(fbillno)==0)
-  {
-    str_bill <-""
-  }else{
-    str_bill <-paste0(" and fbillno =  '",fbillno,"'  ")
-  }
-  sql <- paste0("select FBarcode as '二维码',FChartNumber '图号',FBillNo as '生产任务单号' from  takewiki_mo_barcode
-where FChartNumber ='",fchartNo,"'",str_bill," 
-order by  FBarcode  ",str_a)
+# 内部条码标签查询-----
+query_barcode_chartNo <- function(fchartNo ='P207012C134G01'){
+    #删除不需要的字段
+    
+  
+  sql <- paste0("select FBarcode as '二维码',FChartNumber '图号',FBillNo as '生产任务单号',FSoInfoNote as '订单信息备注' from  takewiki_mo_barcode
+where FChartNumber ='",fchartNo,"'  order by  FBarcode  ")
   print(sql)
   r <- tsda::sql_select(conn,sql)
   return(r)
-  
+
 }
 
 

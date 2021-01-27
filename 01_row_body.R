@@ -1,3 +1,4 @@
+#BOM管理-------
 menu_row <- tabItem(tabName = "row",
                     fluidRow(
                       column(12,   tabBox(

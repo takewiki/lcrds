@@ -189,104 +189,111 @@
     
 
     #4.条码配货模块相关代码------- 
-    file_ext_barcode <- var_file('file_ext_barcode')
-    rule_ext_sorted <- var_ListChoose1('rule_ext_sorted');
-    
-    var_ext_so <- var_text('filter_ext_so')
-    
-    
-    data_ext_barcode <- reactive({
-      file_ext_barcode <- file_ext_barcode();
-      ext_so <- var_ext_so()
-      res <- readxl::read_excel(file_ext_barcode);
-      res <- res[,c('订单号',	'物料号'	,'二维码','备注')];
-      
-      if(len(ext_so) >0){
-        res <- res[res$`订单号` == ext_so & !is.na(res$`订单号`),]
-        print(res)
-      }else(
-        print(res)
-      )
-      res <- res[order(res$`二维码`,decreasing = rule_ext_sorted()),]
-      return(res);
-      
-    })
-    
-    data_ext_barcode_pre <- reactive({
-      res <-data_ext_barcode()
-      # res <- head(res)
-      return(res)
-      
-    })
-    
-    data_ext_barcode_db<- reactive({
-      res <-data_ext_barcode()
-      names(res) <-c('FSoNo','FChartNo','FBarcode','FNote')
-      res$FNote <- tsdo::na_replace(res$FNote,'')
-      res$FNote <- as.character(res$FNote)
-      res$FSoNo <- as.character(res$FSoNo)
-      #增值对订单号~有处理
-      res$FChartNo <- lcrdspkg::soSplit(res$FChartNo)
-      # res <- head(res)
-      return(res)
-      
-    })
-    
-    data_ext_barcode_cn <- reactive({
-      res <- data_ext_barcode_db()
-      names(res) <-c('订单号','物料号(图号)','二维码','备注')
-      return(res)
-      
-    })
-    
-    
-    
+     file_ext_barcode <- var_file('file_ext_barcode')
+    # 
+    #   res <- res[,c('订单号',	'物料号'	,'二维码','备注')];
+    #   
+    #   if(len(ext_so) >0){
+    #     res <- res[res$`订单号` == ext_so & !is.na(res$`订单号`),]
+    #     print(res)
+    #   }else(
+    #     print(res)
+    #   )
+    #   res <- res[order(res$`二维码`,decreasing = rule_ext_sorted()),]
+    #   return(res);
+    #   
+    # })
+    # 
+    # data_ext_barcode_pre <- reactive({
+    #   res <-data_ext_barcode()
+    #   # res <- head(res)
+    #   return(res)
+    #   
+    # })
+    # 
+    # data_ext_barcode_db<- reactive({
+    #   res <-data_ext_barcode()
+    #   names(res) <-c('FSoNo','FChartNo','FBarcode','FNote')
+    #   res$FNote <- tsdo::na_replace(res$FNote,'')
+    #   res$FNote <- as.character(res$FNote)
+    #   res$FSoNo <- as.character(res$FSoNo)
+    #   #增值对订单号~有处理
+    #   res$FChartNo <- lcrdspkg::soSplit(res$FChartNo)
+    #   # res <- head(res)
+    #   return(res)
+    #   
+    # })
+    # 
+    # data_ext_barcode_cn <- reactive({
+    #   res <- data_ext_barcode_db()
+    #   names(res) <-c('订单号','物料号(图号)','二维码','备注')
+    #   return(res)
+    #   
+    # })
+    # 
+    #预览外部订单信息--------
+    var_txt_FCalcNo <- var_text('txt_FCalcNo')
     observeEvent(input$btn_ext_barcode,{
-      run_dataTable2('preview_ext_barcode',data_ext_barcode_cn())
+      run_dataTable2('preview_ext_barcode',{
+        lcrdspkg::extBarcode_read(file=file_ext_barcode(),FCalcNo = input$txt_FCalcNo,lang = 'cn' )
+        
+      })
     })
     
     var_barcode <- var_text('mo_chartNo')
     var_inner_sort <- var_ListChoose1('rule_inner_sorted')
+    data_ext_barcode_db <-eventReactive(input$btn_ext_barcode,{
+      res <-lcrdspkg::extBarcode_read(file=file_ext_barcode(),FCalcNo = input$txt_FCalcNo,lang = 'en' )
+      res$FCalcNo <- as.integer(res$FCalcNo)
+      return(res)
+    })
     
     #处理上传事项
-    observeEvent(input$btn_ext_barcode_upload,{
+    observeEvent(input$btn_ext_barcode_upload1,{
+      print(1)
+      print(data_ext_barcode_db())
+      print(2)
       
-      tsda::upload_data(conn,'takewiki_ext_barcode',data_ext_barcode_db())
+      tsda::upload_data(conn_bom,'takewiki_ext_barcode',data_ext_barcode_db())
+      print(3)
       pop_notice('已上传服务器')
+      print(4)
     })
     
     
     #内部条码标签
     data_inner_barcode <-reactive({
-      data <-query_barcode_chartNo(fchartNo = var_barcode(),fbillno=input$mo_fbillno,order_asc = var_inner_sort())
+      data <-query_barcode_chartNo(fchartNo = var_barcode())
+      #完善一下规则从1.6版本只显示图号，不显示其他信息
       return(data)
     })
+    #完善相关数据-----
+    #不再显示订单------
+    #暂时不用，内部条件不再需要上传
+    # data_inner_barcode_db <- reactive({
+    #   data <- data_inner_barcode()
+    #   names(data) <-c('FBarcode','FChartNo','FMoNo')
+    #     ncount <- nrow(data)
+    #     if(ncount >0){
+    #      
+    #      
+    #       return(data)
+    #     }else{
+    #       pop_notice(paste0("图号",var_barcode(),"没有对应的生产任务单及条码信息，请确认"))
+    #       return(data)
+    #       
+    #     }
+    #    
+    #   
+    # })
     
-    data_inner_barcode_db <- reactive({
-      data <- data_inner_barcode()
-      names(data) <-c('FBarcode','FChartNo','FMoNo')
-      if(len(var_ext_so()) ==0){
-        pop_notice('请在外部标签填写销售订单号')
-        return(data)
-      }else{
-        ncount <- nrow(data)
-        if(ncount >0){
-          res <- tsdo::df_addCol(data,'FSoNo',var_ext_so())
-          res$FSoNo <- tsdo::na_replace(res$FSoNo,'')
-          return(res)
-        }else{
-          pop_notice(paste0("图号",var_barcode(),"没有对应的生产任务单及条码信息，请确认"))
-          return(data)
-          
-        }
-       
-      }
-      
-    })
+    #查询相关数据
     observeEvent(input$btn_inner_barcode,{
       
-      data <- data_inner_barcode_db()
+      data <- data_inner_barcode()
       run_dataTable2('preview_inner_barcode',data = data)
+      #处理下载事宜
+      run_download_xlsx('btn_inner_barcodeDL',data = data,filename = '内部条码数据下载.xlsx')
     })
     
     
@@ -671,8 +678,10 @@
     #添加条码功能模板
     run_download_xlsx(id = 'ext_barCode_tpl_dl',data = get_extBarCode_tpl(),filename = '外部订单模板.xlsx')
     #订单备注信息处理
-    run_download_xlsx(id = 'ext_soNote_tpl_dl',data = lcrdspkg::soNote_data_tpl(),filename = '订单备注模板.xlsx')
+    run_download_xlsx(id = 'ext_soNote_tpl_dl',data = lcrdspkg::soNote_data_tpl(),filename = '订单备注上传模板.xlsx')
+    run_download_xlsx(id = 'ext_soNote_tpl_dl2',data = lcrdspkg::soNote_data_tpl(),filename = '订单备注修改模板.xlsx')
     var_file_so_note <- var_file('file_so_note')
+    var_file_so_note2 <- var_file('file_so_note2')
     observeEvent(input$btn_soNote_preview,{
       file = var_file_so_note()
       data_preview <- lcrdspkg::soNote_read(file = file)
@@ -681,12 +690,76 @@
       
     })
     
+    #订单备注修改预览--------
+    observeEvent(input$btn_soNote_preview2,{
+      file = var_file_so_note2()
+      data_preview <- lcrdspkg::soNote_read(file = file)
+      run_dataTable2(id = 'preview_soNote_dataView2',data = data_preview)
+      
+      
+    })
+    
     observeEvent(input$btn_soNote_upload,{
       file = var_file_so_note()
-      lcrdspkg::soNote_uploadDB(file = file,conn = conn_bom)
+      # 上传到RDS服务器
+      lcrdspkg::soNote_uploadDB(file = file,table_name = 't_lcrds_soNote',conn = conn_bom)
       pop_notice('订单备注已上传服务器')
       
       
     })
-  
+    #订单备注修改上传-----
+    observeEvent(input$btn_soNote_upload2,{
+      file = var_file_so_note2()
+      # 上传到RDS服务器
+      lcrdspkg::soNote_uploadDB(file = file,table_name = 't_lcrds_soNote2',conn = conn_bom)
+      pop_notice('订单备注已上传服务器')
+      
+      
+    })
+    
+    #处理运算单号----------
+    observeEvent(input$btn_barCalc_getNumber,{
+      calcNo <- as.character(  lcrdspkg::extBarcode_newId())
+      updateTextInput(session = session,inputId = 'txt_FCalcNo',label = '条码配货运算单号(唯一运算批次号)',value = calcNo)
+    })
+    
+    #处理订单备注批量查询-----
+    var_btn_SOInfo_Date1 <- var_text('btn_SOInfo_Date1')
+    var_btn_SOInfo_Date2 <- var_text('btn_SOInfo_Date2')
+    
+    observeEvent(input$btn_SOInfo_QueryRange,{
+      FSoNo1 <- var_btn_SOInfo_Date1()
+      FSoNo2 <-var_btn_SOInfo_Date2()
+      data <- lcrdspkg::soNote_view_query(FSoNo1 = FSoNo1,FSoNo2 = FSoNo2)
+      run_dataTable2('soNote_view_QueryView',data = data)
+      #下载数据----
+      run_download_xlsx('btn_SOInfo_QueryRange',data = data,filename = '订单备注批量下载.xlsx')
+      
+    })
+    
+    #条码隔离区下载模块-----
+    #修复模板数据，提供模板数据数据
+    #来源于RDS
+    run_download_xlsx(id = 'file_SOInfo_seal_Tpl',data = lcrdspkg::barcode_ban_tpl(),filename = '条码隔离区下载模板.xlsx')
+    #处理隔离区条码信息------
+    var_file_SOInfo_seal <- var_file('file_SOInfo_seal')
+    #添加到隔离区-------
+    observeEvent(input$btn_seal_PutIn,{
+      file <- var_file_SOInfo_seal()
+      try(lcrdspkg::barCode_ban_add(file = file,conn = conn))
+      pop_notice('添加到隔离区执行完成！')
+      
+    })
+    #移动出隔离区---
+    observeEvent(input$btn_seal_PushOut,{
+      file <- var_file_SOInfo_seal()
+      try(lcrdspkg::barCode_ban_rm(file=file,conn=conn))
+      pop_notice('移动出隔离区执行完成！')
+      
+      
+      
+      
+    })
+    
+    
 })

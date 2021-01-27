@@ -1,3 +1,4 @@
+# BOM核价-------
 menu_column <- tabItem(tabName = "column",
                        fluidRow(
                          column(12,   tabBox(
