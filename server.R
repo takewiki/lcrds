@@ -678,8 +678,8 @@
     #添加条码功能模板
     run_download_xlsx(id = 'ext_barCode_tpl_dl',data = get_extBarCode_tpl(),filename = '外部订单模板.xlsx')
     #订单备注信息处理
-    run_download_xlsx(id = 'ext_soNote_tpl_dl',data = lcrdspkg::soNote_data_tpl(),filename = '订单备注上传模板.xlsx')
-    run_download_xlsx(id = 'ext_soNote_tpl_dl2',data = lcrdspkg::soNote_data_tpl(),filename = '订单备注修改模板.xlsx')
+    run_download_xlsx(id = 'ext_soNote_tpl_dl',data = lcrdspkg::soNote_data_tpl(),filename = '技术订单备注上传模板.xlsx')
+    run_download_xlsx(id = 'ext_soNote_tpl_dl2',data = lcrdspkg::soNote_data_tpl(),filename = '生产订单备注上传模板.xlsx')
     var_file_so_note <- var_file('file_so_note')
     var_file_so_note2 <- var_file('file_so_note2')
     observeEvent(input$btn_soNote_preview,{
@@ -699,6 +699,8 @@
       
     })
     
+    #技术订单备注上传
+    
     observeEvent(input$btn_soNote_upload,{
       file = var_file_so_note()
       # 上传到RDS服务器
@@ -708,6 +710,7 @@
       
     })
     #订单备注修改上传-----
+    #生产订单备注上传----
     observeEvent(input$btn_soNote_upload2,{
       file = var_file_so_note2()
       # 上传到RDS服务器
@@ -755,6 +758,27 @@
       file <- var_file_SOInfo_seal()
       try(lcrdspkg::barCode_ban_rm(file=file,conn=conn))
       pop_notice('移动出隔离区执行完成！')
+      
+      
+      
+      
+    })
+    
+    #工事番号排序合并-------
+    
+    var_lcmo_file_id <- var_file('lcmo_file_id')
+    var_lcmo_itemCategory_Key <- var_text('lcmo_itemCategory_Key')
+    observeEvent(input$lcmo_deal_button,{
+      #处理代码:
+      file_name <-var_lcmo_file_id()
+      key_word <- var_lcmo_itemCategory_Key()
+      data <- lcmopkg::mo_combine(file_name = file_name,key_word = key_word)
+      #处理好的数据进行显示
+      run_dataTable2('lcmo_data_dataShow',data = data)
+      dl_name <- paste0('工事番号处理结果_',as.character(Sys.Date()),'.xlsx')
+      #处理下载
+      run_download_xlsx(id = 'lcmo_data_dl',data = data,filename = dl_name)
+      
       
       
       

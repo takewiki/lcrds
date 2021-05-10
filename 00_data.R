@@ -1,4 +1,6 @@
 # 设置app标题-----
+#3.6 进行Bug修复-----
+
 #3.5 2020-12-20
 #新增如下需求
 #1、外部的订单号第一行都不一样，增加批量上传
@@ -65,11 +67,11 @@ conn_bom <- conn_rds('lcrds')
 #测试环境1
 #conn <- conn_rds('lcdb')
 #测试环境2
-# conn <- conn_rds('LCERP')
+ conn <- conn_rds('LCERP')
 # 正式环境------
-cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
-
-conn <- tsda::conn_open(conn_config_info = cfg_lc)
+# cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
+# 
+# conn <- tsda::conn_open(conn_config_info = cfg_lc)
 #sql <- 'select top 10 * from takewiki_mo_barcode '
 #mydata <- sql_select(conn,sql)
 #View(mydata)
@@ -104,14 +106,32 @@ where FChartNumber ='",fchartNo,"'  order by  FBarcode  ")
 
 
 #查询外部条码----
-get_extBarCode_bySo <- function(conn,fbillno='bbc'){
-  sql <-paste0("select FSoNo ,FChartNo,FBarcode from takewiki_ext_barcode
-where FSoNo ='",fbillno,"'")
+#针对外部条码进行处理
+#增加了两个字段，不知道是否会有影响
+get_extBarCode_bySo <- function(conn_bom){
+  sql <-paste0("SELECT  [FSoNo] 
+      ,[FChartNo]
+      ,[FBarcode]
+	  ,FNote_Tech  as FNote    
+      ,[FFlag_112] as FFlag
+   
+  FROM [lcrds].[dbo].[v_lcrds_soNoteQuery]
+  where FCalcNo
+in
+(select max(FCalcNo) as FCalcNo_Max from takewiki_ext_barcode)")
   res <- tsda::sql_select(conn,sql)
   return(res)
 }
 
-#查询内部条码
+
+# get_extBarCode_bySo <- function(conn,fbillno='bbc'){
+#   sql <-paste0("select FSoNo ,FChartNo,FBarcode from takewiki_ext_barcode
+# where FSoNo ='",fbillno,"'")
+#   res <- tsda::sql_select(conn,sql)
+#   return(res)
+# }
+
+#查询内部条码------
 get_innerBarCode_bySo <- function(conn,fbillno='bbc'){
   sql <-paste0("select FSoNo ,FChartNo,FBarcode from takewiki_inner_barcode
 where FSoNo ='",fbillno,"'")
@@ -153,10 +173,10 @@ alloc_barcode <- function(data_ext,data_inner){
   
 }
 
-
-barcode_allocate_auto <-function(conn,fbillno='bbc'){
-  data_ext <-get_extBarCode_bySo(conn,fbillno);
-  data_inner <-get_innerBarCode_bySo(conn,fbillno);
+#自动分配的函数处理自动分配
+barcode_allocate_auto <-function(conn_bom,conn){
+  data_ext <-get_extBarCode_bySo(conn_bom);
+  data_inner <-get_innerBarCode_bySo(conn);
   res <- alloc_barcode(data_ext,data_inner);
   if(nrow(res) >0){
     tsda::upload_data(conn,'takewiki_barcode_allocate_auto',res)

@@ -38,6 +38,24 @@ menu_book <- tabItem(tabName = "book",
                                         title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
                                         'data here'
                                       )))
+                                  )),
+                         tabPanel("工事番号合并", 
+                                  tagList(
+                                    fluidRow(
+                                      column(4,     box(
+                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
+                                        mdl_file(id = 'lcmo_file_id',label = '请选择数据源XLSX'),
+                                        tags$h4('品名可以输入轿顶站|配电箱'),
+                                        mdl_text2(id = 'lcmo_itemCategory_Key',label = '请输入品名',value = '轿顶站'),
+                                        actionBttn(inputId = 'lcmo_deal_button',label = '排序合并'),
+                                        mdl_download_button('lcmo_data_dl','下载处理结果')
+                                        
+                                        
+                                      )),
+                                      column(8,box(
+                                        title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
+                                        div(style = 'overflow-x: scroll', mdl_dataTable('lcmo_data_dataShow','BOM页签数据'))
+                                      )))
                                   ))
                        ))
                        

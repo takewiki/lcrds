@@ -16,6 +16,7 @@ library(tsai);
 library(shinyalert);
 library(rclipboard);
 library(DTedit);
+library(lcmopkg)
 DTeditCn::setDTtoCn();
 library(lcrdspkg)
 
