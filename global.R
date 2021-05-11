@@ -20,7 +20,7 @@ library(lcmopkg)
 DTeditCn::setDTtoCn();
 library(lcrdspkg)
 
-
+# 加载相关的组件
 source('00_data.R',encoding = 'utf-8');
 source('01_row_body.R',encoding = 'utf-8');
 source('02_column_body.R',encoding = 'utf-8');

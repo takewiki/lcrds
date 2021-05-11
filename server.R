@@ -317,14 +317,17 @@
       return(res)
     })
     data_barcode_match_preview <- reactive({
-      res <- data_barcode_match_db();
+      #res <- data_barcode_match_db();
       #names(res) <-c('销售订单号','图号','外部二维码','内部二维码')
+      res <- lcrdspkg::extBarcode_AllocateResult(conn_rds = conn_bom,conn_erp = conn)
       return(res)
     })
     
     observeEvent(input$match_do,{
       #code here
-      barcode_allocate_auto(conn,var_ext_so())
+      #barcode_allocate_auto(conn,var_ext_so())
+      #修复了智能匹配的逻辑
+      lcrdspkg::extBarcode_AllocateALL(conn_rds = conn_bom,conn_erp = conn)
       pop_notice('智能匹配已完成！')
       
     })

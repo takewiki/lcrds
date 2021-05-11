@@ -43,7 +43,7 @@
 #2.1----
 #base line
 
-app_title <-'菱川电器数据处理平台';
+app_title <-'菱川电器数据处理平台3.7';
 
 # store data into rdbe in the rds database
 app_id <- 'lcrds'
