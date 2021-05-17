@@ -43,7 +43,7 @@
 #2.1----
 #base line
 
-app_title <-'菱川电器数据处理平台3.7';
+app_title <-'菱川电器数据处理平台4.0';
 
 # store data into rdbe in the rds database
 app_id <- 'lcrds'
@@ -67,11 +67,11 @@ conn_bom <- conn_rds('lcrds')
 #测试环境1
 #conn <- conn_rds('lcdb')
 #测试环境2
- conn <- conn_rds('LCERP')
+# conn <- conn_rds('LCERP')
 # 正式环境------
-# cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
-# 
-# conn <- tsda::conn_open(conn_config_info = cfg_lc)
+cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
+ 
+conn <- tsda::conn_open(conn_config_info = cfg_lc)
 #sql <- 'select top 10 * from takewiki_mo_barcode '
 #mydata <- sql_select(conn,sql)
 #View(mydata)
