@@ -313,10 +313,10 @@
     #处理智能匹配的内容
     
     data_barcode_match_db <- reactive({
-      res <-barcode_match_preview2(conn,var_ext_so())
+      res <-barcode_2(conn,var_ext_so())
       return(res)
     })
-    data_barcode_match_preview <- reactive({
+    data_barcode_ <- reactive({
       #res <- data_barcode_match_db();
       #names(res) <-c('销售订单号','图号','外部二维码','内部二维码')
       res <- lcrdspkg::extBarcode_AllocateResult(conn_rds = conn_bom,conn_erp = conn)
@@ -326,6 +326,10 @@
     observeEvent(input$match_do,{
       #code here
       #barcode_allocate_auto(conn,var_ext_so())
+      #添加功能，启用相应的功能点
+      shinyjs::enable(id = 'match_preview')
+      shinyjs::enable(id = 'match_dl-mdl_download_button')
+      
       #修复了智能匹配的逻辑
       lcrdspkg::extBarcode_AllocateALL(conn_rds = conn_bom,conn_erp = conn)
       pop_notice('智能匹配已完成！')
@@ -725,6 +729,14 @@
     
     #处理运算单号----------
     observeEvent(input$btn_barCalc_getNumber,{
+      #添加功能点：
+      #在获取条码运算单号时禁用使用如下功能点
+      # 预览配货单
+      # 下载配货单
+      shinyjs::disable(id = 'match_preview')
+      shinyjs::disable(id = 'match_dl-mdl_download_button')
+      
+      
       calcNo <- as.character(  lcrdspkg::extBarcode_newId())
       updateTextInput(session = session,inputId = 'txt_FCalcNo',label = '条码配货运算单号(唯一运算批次号)',value = calcNo)
     })
@@ -766,6 +778,56 @@
       
       
     })
+    
+    #禁用查询功能-----
+    var_btn_seal_dateRange <- var_dateRange('btn_seal_dateRange')
+    var_btn_seal_queryTxt <- var_text('btn_seal_queryTxt')
+    
+    observeEvent(input$btn_seal_queryList,{
+      dates = var_btn_seal_dateRange()
+      FChartNumber = var_btn_seal_queryTxt()
+      
+      # print(dates[1])
+      # print(dates[2])
+      # 
+      # print(FChartNumber)
+      
+      data = lcrdspkg::barcode_banned_query2(conn = conn,FStartDate = dates[1],FEndDate = dates[2],FChartNumber = FChartNumber)
+      run_dataTable2(id = 'barcode_deleted_dataView',data = data)
+      run_download_xlsx(id = 'barcode_deleted_dl',data = data,filename = '禁用条码下载.xlsx')
+      
+      
+      
+    })
+    
+    #日志功能模块-------
+    
+    var_log_topN = var_text('log_topN')
+    
+    observeEvent(input$match_Current_LogQuery,{
+      #当前日志查询
+      topN = as.integer(var_log_topN())
+      data = lcrdspkg::log_getDetail(conn_erp = conn,topN = topN)
+      run_dataTable2('match_log_dataShow',data = data)
+      run_download_xlsx('match_log_download',data = data,filename = '配货单运算日志查询.xlsx')
+      
+      
+    })
+    
+    observeEvent(input$match_Last3_LogQuery,{
+      #最近3次日志查询
+      
+      
+    })
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     #工事番号排序合并-------
     

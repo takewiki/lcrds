@@ -131,18 +131,25 @@ menu_series<- tabItem(tabName = "series",
                                          
                                          fluidRow( 
                                            column(12, mdl_download_button('file_SOInfo_seal_Tpl',label = '下载模板'),
+                                                  ''
                                                   
-                                                  actionButton('btn_SOInfo_sealPreview','预览内容'))
-                                         ),
+                                                 # actionButton('btn_SOInfo_sealPreview','预览内容'))
+                                         )),
                                          br(),
                                          br(),
                                          actionButton('btn_seal_PutIn','添加到隔离区'),
-                                         actionButton('btn_seal_PushOut','移动出隔离区')
+                                         actionButton('btn_seal_PushOut','移动出隔离区'),
+                                         br(),
+                                         br(),
+                                         mdl_dateRange(id = 'btn_seal_dateRange',label = '请输入查询日期'),
+                                         mdl_text(id = 'btn_seal_queryTxt',label = '请输入查询条码图号',value = ''),
+                                         actionButton(inputId = 'btn_seal_queryList',label = '隔离条码查询'),
+                                         mdl_download_button('barcode_deleted_dl','下载禁用标签')
                                          
                                        )),
                                        column(8,box(
                                          title = "预览订单备注内容", width = NULL, solidHeader = TRUE, status = "primary",
-                                         ''
+                                         div(style = 'overflow-x: scroll',mdl_dataTable('barcode_deleted_dataView',label = '预览内部标签内容'))
                                        )))
                                    )),
 
@@ -153,6 +160,7 @@ menu_series<- tabItem(tabName = "series",
                                        
                                        
                                        actionButton('match_do','智能匹配'),
+                                      # actionButton('match_do_reset','再次激活智能匹配'),
                                        actionButton('match_preview','预览配货单'),
                                        mdl_download_button('match_dl','下载配货单')
                                      )),
@@ -165,9 +173,9 @@ menu_series<- tabItem(tabName = "series",
                                      column(4,   box(
                                        title = "匹配规则", width = NULL, solidHeader = TRUE, status = "primary",
                                        
-                                       
+                                       mdl_text(id = 'log_topN',label = '最近N次的日志,默认为1,可修改',value = '1'),
                                        actionButton('match_Current_LogQuery','当前日志查询'),
-                                       actionButton('match_Last3_LogQuery','最近3次日志查询'),
+                                       #actionButton('match_Last3_LogQuery','最近3次日志查询'),
                                        mdl_download_button('match_log_download','下载日志')
                                      )),
                                      column(8, box(
