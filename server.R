@@ -316,7 +316,7 @@
       res <-barcode_2(conn,var_ext_so())
       return(res)
     })
-    data_barcode_ <- reactive({
+    data_barcode_match_preview <- reactive({
       #res <- data_barcode_match_db();
       #names(res) <-c('销售订单号','图号','外部二维码','内部二维码')
       res <- lcrdspkg::extBarcode_AllocateResult(conn_rds = conn_bom,conn_erp = conn)
