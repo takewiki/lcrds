@@ -51,7 +51,7 @@
 #2.1----
 #base line
 
-app_title <-'菱川电器数据处理平台4.4';
+app_title <-'菱川电器数据处理平台4.5';
 
 # store data into rdbe in the rds database
 app_id <- 'lcrds'
@@ -75,7 +75,7 @@ conn_bom <- conn_rds('lcrds')
 #测试环境1
 #conn <- conn_rds('lcdb')
 #测试环境2
-# conn <- conn_rds('LCERP2')
+#conn <- conn_rds('LCERP2')
 # 正式环境------
 cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
 

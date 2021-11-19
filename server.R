@@ -255,6 +255,8 @@
       print(2)
       
       tsda::upload_data(conn_bom,'takewiki_ext_barcode',data_ext_barcode_db())
+      #同时上传服务系统中的数据
+      tsda::upload_data(conn,'takewiki_ext_barcode2',data_ext_barcode_db())
       print(3)
       pop_notice('已上传服务器')
       print(4)
