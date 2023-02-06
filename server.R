@@ -838,6 +838,7 @@
     observeEvent(input$lcmo_deal_button,{
       #处理代码:
       file_name <-var_lcmo_file_id()
+      #针对页签进行处理
       key_word <- var_lcmo_itemCategory_Key()
       data <- lcmopkg::mo_combine(file_name = file_name,key_word = key_word)
       #处理好的数据进行显示
@@ -847,6 +848,21 @@
       run_download_xlsx(id = 'lcmo_data_dl',data = data,filename = dl_name)
       
       
+      
+      
+      
+    })
+    
+    #新三菱订单格式转换处理2023转2022版-------
+    var_lcmo_formatter_file_name <- var_file('lcmo_formatter_file_name')
+    var_lcmo_formatter_sheet_name <- var_text('lcmo_formatter_sheet_name')
+    observeEvent(input$lcmo_formatter_do,{
+      file_name = var_lcmo_formatter_file_name()
+      sheet_name = var_lcmo_formatter_sheet_name()
+      data = lcmopkg::mo_formatter(file_name = file_name,sheet_name = sheet_name)
+      run_dataTable2(id = 'lcmo_formatter_dv',data = data)
+      dl_name <- paste0('新三菱订单格式转换处_',as.character(Sys.Date()),'.xlsx')
+      run_download_xlsx(id = 'lcmo_formatter_dl',data = data,filename = dl_name)
       
       
       
