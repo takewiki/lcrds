@@ -1,6 +1,6 @@
 
 
-app_title <-'菱川电器数据处理平台5.3';
+app_title <-'菱川电器数据处理平台5.5';
 
 # store data into rdbe in the rds database
 app_id <- 'lcrds'

@@ -46,8 +46,10 @@ menu_book <- tabItem(tabName = "book",
                                         title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
                                         mdl_file(id = 'lcmo_formatter_file_name',label = '请选择新三菱订单2023版XLSX'),
                                         tsui::uiTemplate(templateName = '新三菱订单模板2023转2022'),
-                                        tags$h4('请输入EXCEL页签'),
-                                        mdl_text2(id = 'lcmo_formatter_sheet_name',label = '请输入页签名',value = '2023新模板表'),
+                                        tags$h4('请输入EXCEL页签,系统将对子箱进行BOM展开'),
+                                        #mdl_text2(id = 'lcmo_formatter_sheet_name',label = '请输入页签名',value = '2023新模板表'),
+                                        tsui::mdl_text(id='sheet_data',label = '数据页签',value = "2023新模板表"),
+                                        tsui::mdl_text(id='sheet_BOM',label = '数据页签',value = "2023BOM表"),
                                         actionBttn(inputId = 'lcmo_formatter_do',label = '格式转换'),
                                         mdl_download_button('lcmo_formatter_dl','下载处理结果')
                                         

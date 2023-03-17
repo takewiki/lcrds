@@ -855,11 +855,15 @@
     
     #新三菱订单格式转换处理2023转2022版-------
     var_lcmo_formatter_file_name <- var_file('lcmo_formatter_file_name')
-    var_lcmo_formatter_sheet_name <- var_text('lcmo_formatter_sheet_name')
+    #var_lcmo_formatter_sheet_name <- var_text('lcmo_formatter_sheet_name')
+    var_sheet_data=tsui::var_text('sheet_data')
+    var_sheet_BOM=tsui::var_text('sheet_BOM')
     observeEvent(input$lcmo_formatter_do,{
       file_name = var_lcmo_formatter_file_name()
-      sheet_name = var_lcmo_formatter_sheet_name()
-      data = lcmopkg::mo_formatter(file_name = file_name,sheet_name = sheet_name)
+      #sheet_name = var_lcmo_formatter_sheet_name()
+      sheet_data=var_sheet_data()
+      sheet_BOM=var_sheet_BOM()
+      data =lcmopkg::bom_breakdown(file_name = file_name,sheet_data = sheet_data,sheet_BOM = sheet_BOM)
       run_dataTable2(id = 'lcmo_formatter_dv',data = data)
       dl_name <- paste0('新三菱订单格式转换处_',as.character(Sys.Date()),'.xlsx')
       run_download_xlsx(id = 'lcmo_formatter_dl',data = data,filename = dl_name)
