@@ -508,7 +508,7 @@
       
     })
     
-    #处理L翻转表数据
+    #处理L翻转表数据-----
     var_ltab_chartNo <- var_text('bq_Ltab_chartNo_input')
     
     data_ltab_dl <- eventReactive(input$bq_Ltab_chartNo_preview,{
@@ -553,10 +553,14 @@
     var_FchartNo <- var_text('bq_spare_partNo')
     var_FGtab <- var_text('bq_spare_GNo')
     var_FLtab <- var_text('bq_spare_LNo')
+    #预览配件BOM-----
     db_bom_spare <- eventReactive(input$bq_spare_preview,{
       FchartNo <- var_FchartNo()
       FGtab <- var_FGtab()
       FLtab <- var_FLtab()
+      print('bug test for param:')
+      print(FGtab)
+      print(FLtab)
       
       res<- lcrdspkg::dm_selectDB_detail2(conn=conn_bom,FchartNo = FchartNo,FParamG = FGtab,FParamL = FLtab)
       return(res)

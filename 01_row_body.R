@@ -90,14 +90,17 @@ menu_row <- tabItem(tabName = "row",
                                    fluidRow(
                                      column(4,     box(
                                        title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                       mdl_text('bq_spare_partNo','请输入配件号'),
+                                       mdl_text('bq_spare_partNo','请输入主图号'),
                                        mdl_text('bq_spare_GNo','请输入G番号'),
                                        mdl_text('bq_spare_LNo','请输入L番号'),
                                        tags$h4("多个L番使用英文逗号,间隔;"),
                                        tags$h4("示例:L07,L08,L13,L27,LS01,LS17;"),
-                                       tags$h4("不输入表示全部L番"),
+                                       tags$h4("如果主图号存在L番，则不输入表示全部L番；"),
+                                       tags$h4("如果主图号不存在L番，则不输入表示L番为''即没有L番"),
                                     
                                        br(),
+                                       #预览配件BOM---------
+                                       #存在部分资料只有G番没有L番的情况
                                        actionBttn('bq_spare_preview','预览配件BOM'),
                                        mdl_download_button('bq_spare_download','下载到Excel')
                                        
