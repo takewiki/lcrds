@@ -876,5 +876,28 @@
       
     })
     
+    #同步采购价格
+    observeEvent(input$btn_purchase_ErpSyncDms,{
+      #
+      lcrdspkg::purchasePrice_ErpSyncDms(erp_token = erp_token,dms_token = dms_token)
+      pop_notice(msg = '采购单价更新成功')
+      
+    })
+    #最新采购单价查询
+    var_txt_purchasePrice_chartNo = tsui::var_text('txt_purchasePrice_chartNo')
+    observeEvent(input$btn_purchasePrice_DmsQuery,{
+      FChartNo = var_txt_purchasePrice_chartNo()
+      data = lcrdspkg::purchsePriceDms_query(dms_token = dms_token,FChartNumber = FChartNo)
+      tsui::run_dataTable2(id = 'dt_purchasePrice_view',data = data)
+      #下载数据
+      tsui::run_download_xlsx(id = 'dl_purchsePrice',data = data,filename = '外购物料最新采购单价.xlsx')
+      
+    })
     
+    #采购调价单的功能注册--
+    mdllcServer::lcServer(input = input,output = output,session = session,dms_token = dms_token)
+    mdllcServer::priceModelServer(input = input,output = output,session = session,dms_token = dms_token)
+    mdllcServer::dmCalcServer(input = input,output = output,session = session,dms_token = dms_token)
+    mdllcServer::priceDetailServer(input = input,output = output,session = session,dms_token = dms_token)
+    mdllcServer::priceSummaryServer(input = input,output = output,session = session,dms_token = dms_token)
 })

@@ -1,6 +1,6 @@
 
 
-app_title <-'菱川电器数据处理平台5.8';
+app_title <-'菱川电器数据处理平台6.0';
 
 # store data into rdbe in the rds database
 app_id <- 'lcrds'
@@ -15,8 +15,10 @@ conn_be <- conn_rds('rdbe')
 
 conn_bom <- conn_rds('lcrds')
 
+#目前使用外网访问，还没有使用内网访问
 
 
+dms_token='048017E3-CA7E-4DC7-BC87-0EA7D8C69C13'
 
 
 
@@ -24,13 +26,15 @@ conn_bom <- conn_rds('lcrds')
 #测试环境1
 #conn <- conn_rds('lcdb')
 #测试环境2
- # conn <- conn_rds('LCERP2')
+ #conn <- conn_rds('LCERP2')
+ #erp_token='BF6CBEB5-BC3E-422B-B96C-32BDACCE32ED'
 # 正式环境------
+erp_token ='E3594A22-91CA-4B88-993C-2B6D823D56F0'
 cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
 
 conn <- tsda::conn_open(conn_config_info = cfg_lc)
-sql <- 'select top 10 * from takewiki_mo_barcode '
-#mydata <- sql_select(conn,sql)
+# sql <- 'select top 10 * from takewiki_mo_barcode '
+# #mydata <- sql_select(conn,sql)
 #View(mydata)
 
 

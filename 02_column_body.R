@@ -24,63 +24,32 @@ menu_column <- tabItem(tabName = "column",
                                           div(style = 'overflow-x: scroll', mdl_dataTable('dmcombo_data_dataShow','BOM页签数据'))
                                         )))
                                     )),
-                           tabPanel("采购价格查询", 
+                           tabPanel("价格来源1-采购发票价", 
                                     tagList(
                                       fluidRow(
                                         column(4,     box(
                                           title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                          actionBttn('bq_getWgPrice','获取外购物料价格')
+                                          actionBttn('btn_purchase_ErpSyncDms','同步ERP最新采购单价至中台DMS'),
+                                          shiny::h4('按图号查询最新采购单价,不输入表示全部'),
+                                          tsui::mdl_text2(id = 'txt_purchasePrice_chartNo',label = '按图号查询',value = ''),
+                                          actionBttn('btn_purchasePrice_DmsQuery','查询外购物料最新采购单价'),
+                                          tsui::mdl_download_button(id = 'dl_purchsePrice',label = '下载采购单价')
+                                          
                                           
                                         )),
                                         column(8,box(
                                           title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'data here'
+                                          tsui::uiScrollX(tsui::mdl_dataTable(id = 'dt_purchasePrice_view'))
                                         )))
                                     )),
-                           tabPanel("采购价格维护", 
-                                    tagList(
-                                      fluidRow(
-                                        column(4,     box(
-                                          title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                          mdl_file('bq_wg_file','选择需要上传的采购物料'),
-                                          actionBttn('bq_wg_filter','修改外购物料价格'),
-                                          actionBttn('bq_wg_apply','应用价格')
-                                          
-                                    
-                                          
-                                          
-                                        )),
-                                        column(8,box(
-                                          title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'data here'
-                                        )))
-                                    )),
-                           tabPanel("DM核价明细表", 
-                                    tagList(
-                                      fluidRow(
-                                        column(4,     box(
-                                          title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'operation here'
-                                          
-                                        )),
-                                        column(8,box(
-                                          title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'data here'
-                                        )))
-                                    )),
-                           tabPanel("DM核价汇总表", 
-                                    tagList(
-                                      fluidRow(
-                                        column(4,     box(
-                                          title = "上传数据", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'operation here'
-                                          
-                                        )),
-                                        column(8,box(
-                                          title = "上传数据预览", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'data here'
-                                        )))
-                                    ))
+                           mdllcUI::lcUI(),
+                           mdllcUI::priceModelUI(),
+                           mdllcUI::dmCalcUI(),
+                           mdllcUI::priceDetailUI(),
+                           mdllcUI::priceSummaryUI()
+                           
+                        
+                          
                          ))
                          
                        )
