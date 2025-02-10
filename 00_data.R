@@ -26,13 +26,13 @@ dms_token='048017E3-CA7E-4DC7-BC87-0EA7D8C69C13'
 #测试环境1
 #conn <- conn_rds('lcdb')
 #测试环境2
- #conn <- conn_rds('LCERP2')
- #erp_token='BF6CBEB5-BC3E-422B-B96C-32BDACCE32ED'
+ conn <- conn_rds('LCERP2')
+ erp_token='BF6CBEB5-BC3E-422B-B96C-32BDACCE32ED'
 # 正式环境------
-erp_token ='E3594A22-91CA-4B88-993C-2B6D823D56F0'
-cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
+#erp_token ='E3594A22-91CA-4B88-993C-2B6D823D56F0'
+#cfg_lc <- tsda::conn_config(config_file = "cfg/conn_lc.R")
 
-conn <- tsda::conn_open(conn_config_info = cfg_lc)
+#conn <- tsda::conn_open(conn_config_info = cfg_lc)
 # sql <- 'select top 10 * from takewiki_mo_barcode '
 # #mydata <- sql_select(conn,sql)
 #View(mydata)
